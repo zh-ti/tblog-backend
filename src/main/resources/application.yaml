@@ -1,0 +1,10 @@
+server:
+  port: 8088
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 986132
+    url: jdbc:mysql:///tblog?useSSL=true&amp;characterEncoding=UTF-8useUnicode=true&serverTimezone=GMT
+    type: com.alibaba.druid.pool.DruidDataSource
