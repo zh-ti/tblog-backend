@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tian.tblog.mapper.DocCategoryMapper">
+
+    <sql id="getCategory">
+        SELECT
+            id,
+            `name`,
+            create_time createDatetime,
+            ifnull(data.browses, 0) as browses,
+            ifnull(data.likes, 0) as likes,
+            ifnull(data.docAmount, 0) as docAmount
+        FROM `doc_category`
+        left join (
+            select
+                document.category_id as category_id,
+                sum(document.likes) as likes,
+                sum(document.browses) as browses,
+                count(document.id) as docAmount
+            from document
+            group by document.category_id
+        )as data
+        on data.category_id = id
+    </sql>
+
+    <select id="queryDocCategory" parameterType="String" resultType="DocCategory">
+        <include refid="getCategory" />
+        where id=#{id}
+    </select>
+
+    <select id="queryDocCategoryByName" parameterType="String" resultType="DocCategory">
+        <include refid="getCategory" />
+        where name=#{name}
+    </select>
+
+    <insert id="addDocCategory">
+        insert into doc_category(id, name, create_time) values(#{id},#{name},#{createDatetime})
+    </insert>
+
+    <select id="getDocCateGoryList" resultType="DocCategory">
+        <include refid="getCategory" />
+    </select>
+
+    <update id="updateDocCategory">
+        update doc_category set name=#{newName} where id=#{id}
+    </update>
+
+    <delete id="deleteDocCategory">
+        delete from doc_category where id=#{id}
+    </delete>
+
+    <select id="queryDocAmount" resultType="_int" parameterType="String">
+        select
+            distinct ifnull(data.docAmount, 0) as docAmount
+        from `doc_category`
+        left join (
+            select
+                document.category_id as category_id,
+                count(document.id) as docAmount
+            from document
+            group by document.category_id
+        )as data
+        on data.category_id = #{id}
+    </select>
+
+</mapper>

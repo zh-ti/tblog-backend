@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tian.tblog.mapper.DocumentMapper">
+
+    <sql id="documentList">
+        select
+            document.id,
+            title,
+            browses,
+            likes,
+            ifnull(data.comments, 0) as comments,
+            state,
+            content,
+            category.`name` as category,
+            category_id as categoryId,
+            publish_datetime as publishDatetime,
+            last_edit as lastEdit,
+            origin
+        from document
+        left join(
+            select
+                document_id as document_id,
+                count(comment.id) as comments
+            from comment
+            group by comment.document_id
+        ) as data
+        on data.document_id = document.id
+                 join (
+            select
+                doc_category.id id,
+                doc_category.`name` `name`
+            from doc_category
+        ) as category
+        on category.id = document.category_id
+    </sql>
+
+    <select id="getDocumentList" resultType="Document">
+        <include refid="documentList" />
+    </select>
+
+    <select id="getUnpublishedDocList" resultType="Document">
+        <include refid="documentList" />
+        where document.state = 0
+    </select>
+
+    <select id="getDocument" parameterType="String" resultType="Document">
+        <include refid="documentList" />
+        where document.id = #{id}
+    </select>
+
+    <select id="getDocumentByTitle" parameterType="String" resultType="Document">
+        select * from document where title=#{title}
+    </select>
+
+    <insert id="addDocument" parameterType="map">
+        insert into document(id, title,category_id, last_edit, content, origin)
+        values(#{id}, #{title}, #{categoryId}, #{lastEdit}, #{content}, #{origin})
+    </insert>
+
+    <update id="updateDocument" parameterType="map">
+        update document set
+            title=#{title},
+            category_id=#{categoryId},
+            origin=#{origin},
+            content=#{content},
+            last_edit=#{lastEdit}
+        where id=#{id}
+    </update>
+
+    <delete id="deleteDocument" parameterType="String">
+        delete from document where id=#{id}
+    </delete>
+
+    <update id="publishDocument" parameterType="map">
+        update document set state=1, publish_datetime=#{lastEdit}, last_edit=#{lastEdit} where id=#{id}
+    </update>
+
+    <update id="withdrawDocument" parameterType="String">
+        update document set state=0 where id=#{id}
+    </update>
+</mapper>
