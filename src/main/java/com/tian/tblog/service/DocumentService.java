@@ -3,7 +3,6 @@ package com.tian.tblog.service;
 import com.tian.tblog.bean.Document;
 
 import java.util.List;
-import java.util.Map;
 
 public interface DocumentService {
     List<Document> documentList();
@@ -16,11 +15,11 @@ public interface DocumentService {
 
     int deleteDocument(String id);
 
-    String addDocument(Map<String, Object> params);
+    String addDocument(String params);
 
-    int updateDocument(Map<String, Object> params);
+    int updateDocument(String params);
 
-    int publishDocument(Map<String, Object> params);
+    int publishDocument(String params);
 
     int withdrawDocument(String id);
 }

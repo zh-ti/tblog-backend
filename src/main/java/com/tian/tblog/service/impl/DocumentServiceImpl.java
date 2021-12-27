@@ -45,13 +45,14 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public String addDocument(Map<String, Object> params){
+    public String addDocument(String params){
         Map<String, Object> resultMap = new HashMap<>();
         String uuid = UUIDGenerator.getShortUUID();
-        params.put("id", uuid);
-        params.put("lastEdit", DateUtils.getFormatDate());
-        if(mapper.getDocumentByTitle((String)params.get("title")) == null){
-            int result = mapper.addDocument(params);
+        Map<String, Object> paramsMap = JsonHandler.parse(params, Map.class);
+        paramsMap.put("id", uuid);
+        paramsMap.put("lastEdit", DateUtils.getFormatDate());
+        if(mapper.getDocumentByTitle((String)paramsMap.get("title")) == null){
+            int result = mapper.addDocument(paramsMap);
             resultMap.put("result", result);
             resultMap.put("id", uuid);
             return JsonHandler.stringify(resultMap);
@@ -61,15 +62,17 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public int updateDocument(Map<String, Object> params) {
-        params.put("lastEdit", DateUtils.getFormatDate());
-        return mapper.updateDocument(params);
+    public int updateDocument(String params) {
+        Map<String, Object> paramsMap = JsonHandler.parse(params, Map.class);
+        paramsMap.put("lastEdit", DateUtils.getFormatDate());
+        return mapper.updateDocument(paramsMap);
     }
 
     @Override
-    public int publishDocument(Map<String, Object> params) {
-        params.put("lastEdit", DateUtils.getFormatDate());
-        return mapper.publishDocument(params);
+    public int publishDocument(String params) {
+        Map<String, Object> paramsMap = JsonHandler.parse(params, Map.class);
+        paramsMap.put("lastEdit", DateUtils.getFormatDate());
+        return mapper.publishDocument(paramsMap);
     }
 
     @Override

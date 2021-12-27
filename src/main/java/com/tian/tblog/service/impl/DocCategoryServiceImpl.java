@@ -46,5 +46,4 @@ public class DocCategoryServiceImpl implements DocCategoryService {
         return mapper.deleteDocCategory(id);
     }
 
-
 }

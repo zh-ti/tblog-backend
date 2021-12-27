@@ -21,7 +21,24 @@
     </delete>
 
     <insert id="addManager" parameterType="map">
-        insert into manager(id, account, password, position)
-        values(#{id}, #{account}, #{password}, #{position})
+        insert into manager(id, account, password, position, regist_datetime)
+        values(#{id}, #{account}, #{password}, #{position}, #{registDatetime})
     </insert>
+
+    <select id="managerList" resultType="Manager">
+        select
+            id,
+            account,
+            password,
+            position,
+            regist_datetime registDatetime
+        from manager
+    </select>
+
+    <select id="checkPassword" resultType="Manager">
+        select * from manager where id=#{id} and password=#{password}
+    </select>
+    <select id="queryManagerByAccount" resultType="Manager">
+        select * from manager where account=#{account}
+    </select>
 </mapper>

@@ -12,4 +12,5 @@ public class Manager {
     private String account;
     private String password;
     private String position;
+    private String registDatetime;
 }

@@ -2,12 +2,9 @@ package com.tian.tblog.controller;
 
 import com.tian.tblog.service.DocumentService;
 import com.tian.tblog.utils.JsonHandler;
+import com.tian.tblog.utils.URLCoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/tblog/document")
@@ -33,17 +30,13 @@ public class DocumentController {
     }
 
     @PostMapping("/addDocument")
-    public String addDocument(@RequestBody String params) throws UnsupportedEncodingException {
-        params = URLDecoder.decode(params, "utf-8");
-        Map map = JsonHandler.parse(params, Map.class);
-        return JsonHandler.stringify(service.addDocument(map));
+    public String addDocument(@RequestBody String params) {
+        return JsonHandler.stringify(service.addDocument(URLCoder.decode(params)));
     }
 
     @PostMapping("/updateDocument")
-    public String updateDocument(@RequestBody String params) throws UnsupportedEncodingException {
-        params = URLDecoder.decode(params, "utf-8");
-        Map paramsMap = JsonHandler.parse(params, Map.class);
-        return JsonHandler.stringify(service.updateDocument(paramsMap));
+    public String updateDocument(@RequestBody String params) {
+        return JsonHandler.stringify(service.updateDocument(URLCoder.decode(params)));
     }
 
     @GetMapping("/getUnpublishedDocList")
@@ -57,10 +50,7 @@ public class DocumentController {
     }
 
     @PostMapping("/publishDocument")
-    public String publishDocument(@RequestBody String params) throws UnsupportedEncodingException {
-        params = URLDecoder.decode(params, "utf-8");
-        System.out.println(params);
-        Map paramsMap = JsonHandler.parse(params, Map.class);
-        return JsonHandler.stringify(service.publishDocument(paramsMap));
+    public String publishDocument(@RequestBody String params) {
+        return JsonHandler.stringify(service.publishDocument(URLCoder.decode(params)));
     }
 }
