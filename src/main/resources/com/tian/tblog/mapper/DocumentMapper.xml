@@ -13,11 +13,13 @@
             likes,
             ifnull(data.comments, 0) as comments,
             state,
+            brief,
             content,
             category.`name` as category,
             category_id as categoryId,
             publish_datetime as publishDatetime,
             last_edit as lastEdit,
+            cover.url cover,
             origin
         from document
         left join(
@@ -28,17 +30,31 @@
             group by comment.document_id
         ) as data
         on data.document_id = document.id
-                 join (
+        join (
             select
                 doc_category.id id,
                 doc_category.`name` `name`
             from doc_category
         ) as category
         on category.id = document.category_id
+        left join (
+            select
+                image.document_id document_id,
+                image.type type,
+                image.url url
+            from image
+        ) as cover
+        on cover.document_id = document.id and cover.type = 1
     </sql>
 
     <select id="getDocumentList" resultType="Document">
         <include refid="documentList" />
+    </select>
+
+    <select id="getPublishedDocument" resultType="Document">
+        <include refid="documentList" />
+        where state = 1
+        order by publish_datetime desc
     </select>
 
     <select id="getUnpublishedDocList" resultType="Document">
@@ -56,8 +72,8 @@
     </select>
 
     <insert id="addDocument" parameterType="map">
-        insert into document(id, title,category_id, last_edit, content, origin)
-        values(#{id}, #{title}, #{categoryId}, #{lastEdit}, #{content}, #{origin})
+        insert into document(id, title,category_id, last_edit, brief, content, origin)
+        values(#{id}, #{title}, #{categoryId}, #{lastEdit}, #{brief}, #{content}, #{origin})
     </insert>
 
     <update id="updateDocument" parameterType="map">
@@ -65,6 +81,7 @@
             title=#{title},
             category_id=#{categoryId},
             origin=#{origin},
+            brief=#{brief},
             content=#{content},
             last_edit=#{lastEdit}
         where id=#{id}
@@ -81,4 +98,9 @@
     <update id="withdrawDocument" parameterType="String">
         update document set state=0 where id=#{id}
     </update>
+
+    <select id="queryLastDocument" parameterType="String" resultType="Document">
+        <include refid="documentList" />
+        where publish_datetime > #{date} and state = 1
+    </select>
 </mapper>

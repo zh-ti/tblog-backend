@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class Document {
     private String id;
     private String title;
+    private String brief;
     private String content;
     private String categoryId;
     private String category;
@@ -19,6 +20,7 @@ public class Document {
     private int browses;
     private int likes;
     private int comments;
+    private String cover;
     private String origin;
 
     public Document(String id, String title, String categoryId, String publishDatetime){

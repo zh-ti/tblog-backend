@@ -19,8 +19,14 @@ public class DocumentController {
         return JsonHandler.stringify(service.documentList());
     }
 
+    @RequestMapping("/getPublishedDocument")
+    public String getPublishedDocument(){
+        return JsonHandler.stringify(service.publishedDocument());
+    }
+
     @GetMapping("/getDocument/{id}")
     public String queryDocument(@PathVariable("id")String id){
+        System.out.println(id);
         return JsonHandler.stringify(service.queryDocument(id));
     }
 

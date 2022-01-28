@@ -9,6 +9,7 @@ import com.tian.tblog.utils.UUIDGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +38,11 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public List<Document> documentList() {
         return mapper.getDocumentList();
+    }
+
+    @Override
+    public List<Document> publishedDocument() {
+        return mapper.getPublishedDocument();
     }
 
     @Override
@@ -72,6 +78,7 @@ public class DocumentServiceImpl implements DocumentService {
     public int publishDocument(String params) {
         Map<String, Object> paramsMap = JsonHandler.parse(params, Map.class);
         paramsMap.put("lastEdit", DateUtils.getFormatDate());
+        mapper.updateDocument(paramsMap);
         return mapper.publishDocument(paramsMap);
     }
 
@@ -80,5 +87,10 @@ public class DocumentServiceImpl implements DocumentService {
         return mapper.withdrawDocument(id);
     }
 
+    @Override
+    public List<Document> getLastDocument(int day){
+        long datetime = new Date().getTime() - day * 24 * 60 * 60 * 1000;
+        return mapper.queryLastDocument(DateUtils.formatDate(new Date(datetime)));
+    }
 
 }

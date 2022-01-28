@@ -37,7 +37,6 @@ public class ManagerServiceImpl implements ManagerService {
     public Map<String, Object> loginManager(String params){
         Map<String, String> paramsMap = JsonHandler.parse(params, Map.class);
         Manager manager = mapper.verifyManager(paramsMap);
-        System.out.println(paramsMap);
         if(manager == null) return null;
         String account = EncryptorUtils.encodeText(manager.getAccount(), key);
         String password = EncryptorUtils.encodeText(manager.getPassword(), key);
@@ -47,6 +46,7 @@ public class ManagerServiceImpl implements ManagerService {
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("result", true);
         resultMap.put("cookie", cookie);
+        System.out.println(resultMap);
         return resultMap;
     }
 

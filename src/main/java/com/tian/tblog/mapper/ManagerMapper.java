@@ -11,11 +11,18 @@ import java.util.Map;
 @Repository
 public interface ManagerMapper {
     List<Manager> managerList();
+
     Manager queryManager(String id);
+
     Manager queryManagerByAccount(String account);
+
     Manager verifyManager(Map<String, String> params);
+
     int updateManager(Map<String, String> params);
+
     int deleteManager(String id);
+
     int addManager(Map<String, String> params);
+
     Manager checkPassword(Map<String, Object> params);
 }

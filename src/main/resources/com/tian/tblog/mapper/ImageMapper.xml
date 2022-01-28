@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tian.tblog.mapper.ImageMapper">
+    <insert id="addImage" parameterType="Image">
+        insert into image(id, type, document_id, url, path) values(#{id}, #{type}, #{documentId}, #{url}, #{path})
+    </insert>
+    <select id="isExistCover" parameterType="map" resultType="Image">
+        select * from image where document_id=#{documentId} and type=#{type}
+    </select>
+    <update id="updateImage" parameterType="Image">
+        update image set type=#{type}, document_id=#{documentId}, url=#{url}, path=#{path} where id=#{id}
+    </update>
+</mapper>

@@ -4,6 +4,7 @@ import com.tian.tblog.bean.Document;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +13,8 @@ import java.util.Map;
 public interface DocumentMapper {
 
     List<Document> getDocumentList();
+
+    List<Document> getPublishedDocument();
 
     List<Document> getUnpublishedDocList();
 
@@ -28,4 +31,6 @@ public interface DocumentMapper {
     int withdrawDocument(String id);
 
     int publishDocument(Map<String, Object> params);
+
+    List<Document> queryLastDocument(String date);
 }
