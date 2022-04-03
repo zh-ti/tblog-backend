@@ -3,9 +3,9 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.tian.tblog.mapper.DocumentMapper">
+<mapper namespace="com.tian.tblog.mapper.ArticleMapper">
 
-    <sql id="documentList">
+    <sql id="articleList">
         select
             document.id,
             title,
@@ -47,60 +47,61 @@
         on cover.document_id = document.id and cover.type = 1
     </sql>
 
-    <select id="getDocumentList" resultType="Document">
-        <include refid="documentList" />
+    <select id="queryArticleList" resultType="Article">
+        <include refid="articleList" />
     </select>
 
-    <select id="getPublishedDocument" resultType="Document">
-        <include refid="documentList" />
+    <select id="queryPublishedArticle" resultType="Article">
+        <include refid="articleList" />
         where state = 1
         order by publish_datetime desc
     </select>
 
-    <select id="getUnpublishedDocList" resultType="Document">
-        <include refid="documentList" />
+    <select id="queryUnpublishedArticleList" resultType="Article">
+        <include refid="articleList" />
         where document.state = 0
     </select>
 
-    <select id="getDocument" parameterType="String" resultType="Document">
-        <include refid="documentList" />
+    <select id="queryArticle" parameterType="String" resultType="Article">
+        <include refid="articleList" />
         where document.id = #{id}
     </select>
 
-    <select id="getDocumentByTitle" parameterType="String" resultType="Document">
+    <select id="queryArticleByTitle" parameterType="String" resultType="Article">
         select * from document where title=#{title}
     </select>
 
-    <insert id="addDocument" parameterType="map">
+    <insert id="insertArticle" parameterType="map">
         insert into document(id, title,category_id, last_edit, brief, content, origin)
         values(#{id}, #{title}, #{categoryId}, #{lastEdit}, #{brief}, #{content}, #{origin})
     </insert>
 
-    <update id="updateDocument" parameterType="map">
+    <update id="updateArticle" parameterType="map">
         update document set
             title=#{title},
             category_id=#{categoryId},
             origin=#{origin},
+            state=#{state},
             brief=#{brief},
             content=#{content},
             last_edit=#{lastEdit}
         where id=#{id}
     </update>
 
-    <delete id="deleteDocument" parameterType="String">
+    <delete id="deleteArticle" parameterType="String">
         delete from document where id=#{id}
     </delete>
 
-    <update id="publishDocument" parameterType="map">
+    <update id="publishArticle" parameterType="map">
         update document set state=1, publish_datetime=#{lastEdit}, last_edit=#{lastEdit} where id=#{id}
     </update>
 
-    <update id="withdrawDocument" parameterType="String">
+    <update id="withdrawArticle" parameterType="String">
         update document set state=0 where id=#{id}
     </update>
 
-    <select id="queryLastDocument" parameterType="String" resultType="Document">
-        <include refid="documentList" />
+    <select id="queryLastArticle" parameterType="String" resultType="Article">
+        <include refid="articleList" />
         where publish_datetime > #{date} and state = 1
     </select>
 </mapper>

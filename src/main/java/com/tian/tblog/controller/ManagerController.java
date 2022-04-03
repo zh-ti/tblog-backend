@@ -1,15 +1,16 @@
 package com.tian.tblog.controller;
 
 import com.tian.tblog.bean.Manager;
+import com.tian.tblog.bean.ResponseEntity;
 import com.tian.tblog.service.ManagerService;
-import com.tian.tblog.utils.JsonHandler;
-import com.tian.tblog.utils.URLCoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+import java.util.Map;
+
 @RestController
-@RequestMapping("/tblog/manager")
-@CrossOrigin(origins="*")
+@RequestMapping("/manager")
 public class ManagerController {
 
     @Autowired
@@ -17,43 +18,56 @@ public class ManagerController {
 
 
     @GetMapping("/getManagerList")
-    public String getManagerList(){
-        return JsonHandler.stringify(service.getManagerList());
+    public ResponseEntity getManagerList() {
+        return service.getManagerList();
     }
 
     @GetMapping("/getManager/{id}")
-    public String getManager(@PathVariable("id") String id){
-        return JsonHandler.stringify(service.getManager(id));
+    public ResponseEntity getManager(@PathVariable("id") String id) {
+        return service.getManager(id);
+    }
+
+    @GetMapping("/login")
+    public ResponseEntity loginView() {
+        return new ResponseEntity("Hello This is login view");
     }
 
     @PostMapping("/login")
-    public String loginManager(@RequestBody String params) {
-        return JsonHandler.stringify(service.loginManager(URLCoder.decode(params)));
+    public ResponseEntity loginManager(@RequestBody Manager manager,
+                                       HttpSession session) {
+        return service.login(manager, session);
     }
 
     @PostMapping("/update")
-    public String updateManager(@RequestBody String params){
-        return JsonHandler.stringify(service.updateManager(URLCoder.decode(params)));
+    public ResponseEntity updateManager(@RequestBody Manager manager) {
+        return service.updateManager(manager);
     }
 
     @PostMapping("/checkLogin")
-    public String checkLogin(@RequestBody String params) {
-        Manager manager = service.verifyManager(URLCoder.decode(params));
-        return manager != null ? "1" : "0";
+    public ResponseEntity checkLogin(@RequestBody Map<String, String> params,
+                                     HttpSession session) {
+        String managerToken = params.get("managerToken");
+        return service.verifyManager(managerToken, session);
     }
 
     @PostMapping("/register")
-    public String registerManger(@RequestBody String params) {
-        return JsonHandler.stringify(service.addManager(URLCoder.decode(params)));
+    public ResponseEntity registerManger(@RequestBody Manager manager) {
+        return service.register(manager);
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteManager(@PathVariable String id){
-        return JsonHandler.stringify(service.deleteManager(id));
+    public ResponseEntity deleteManager(@PathVariable String id) {
+        return service.deleteManager(id);
     }
 
     @PostMapping("/verifyPassword")
-    public String checkPassword(@RequestBody String params){
-        return JsonHandler.stringify(service.checkPassword(params));
+    public ResponseEntity checkPassword(@RequestBody Manager manager) {
+        System.out.println(manager);
+        return service.checkPassword(manager);
+    }
+
+    @PostMapping("/getManagerInfo/{sessionId}")
+    public ResponseEntity getManagerInfo(@PathVariable("sessionId") String sessionId){
+        return service.getManagerInfo(sessionId);
     }
 }

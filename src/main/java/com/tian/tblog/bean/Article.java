@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Document {
+public class Article {
     private String id;
     private String title;
     private String brief;
@@ -23,7 +23,7 @@ public class Document {
     private String cover;
     private String origin;
 
-    public Document(String id, String title, String categoryId, String publishDatetime){
+    public Article(String id, String title, String categoryId, String publishDatetime){
         this.id = id;
         this.title = title;
         this.categoryId = categoryId;

@@ -3,12 +3,12 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.tian.tblog.mapper.DocCategoryMapper">
+<mapper namespace="com.tian.tblog.mapper.ArticleCategoryMapper">
 
     <sql id="getCategory">
         SELECT
             id,
-            `name`,
+            name,
             create_time createDatetime,
             ifnull(data.browses, 0) as browses,
             ifnull(data.likes, 0) as likes,
@@ -26,36 +26,36 @@
         on data.category_id = id
     </sql>
 
-    <select id="queryDocCategory" parameterType="String" resultType="DocCategory">
+    <select id="queryArticleCategory" parameterType="String" resultType="ArticleCategory">
         <include refid="getCategory" />
         where id=#{id}
     </select>
 
-    <select id="queryDocCategoryByName" parameterType="String" resultType="DocCategory">
+    <select id="queryArticleCategoryByName" parameterType="String" resultType="ArticleCategory">
         <include refid="getCategory" />
         where name=#{name}
     </select>
 
-    <insert id="addDocCategory">
+    <insert id="insertArticleCategory">
         insert into doc_category(id, name, create_time) values(#{id},#{name},#{createDatetime})
     </insert>
 
-    <select id="getDocCateGoryList" resultType="DocCategory">
+    <select id="queryArticleCateGoryList" resultType="ArticleCategory">
         <include refid="getCategory" />
     </select>
 
-    <update id="updateDocCategory">
+    <update id="updateArticleCategory">
         update doc_category set name=#{newName} where id=#{id}
     </update>
 
-    <delete id="deleteDocCategory">
+    <delete id="deleteArticleCategory">
         delete from doc_category where id=#{id}
     </delete>
 
-    <select id="queryDocAmount" resultType="_int" parameterType="String">
+    <select id="queryArticleAmount" resultType="_int" parameterType="String">
         select
             distinct ifnull(data.docAmount, 0) as docAmount
-        from `doc_category`
+        from doc_category
         left join (
             select
                 document.category_id as category_id,

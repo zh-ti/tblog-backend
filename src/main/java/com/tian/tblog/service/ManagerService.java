@@ -1,17 +1,26 @@
 package com.tian.tblog.service;
 
 import com.tian.tblog.bean.Manager;
+import com.tian.tblog.bean.ResponseEntity;
 
-import java.util.List;
-import java.util.Map;
+import javax.servlet.http.HttpSession;
 
 public interface ManagerService {
-    List<Manager> getManagerList();
-    Manager getManager(String id);
-    Manager verifyManager(String params);
-    int updateManager(String params);
-    int deleteManager(String id);
-    int addManager(String params);
-    Map loginManager(String params);
-    boolean checkPassword(String params);
+    ResponseEntity getManagerList();
+
+    ResponseEntity getManager(String id);
+
+    ResponseEntity verifyManager(String managerToken, HttpSession session);
+
+    ResponseEntity updateManager(Manager Manager);
+
+    ResponseEntity deleteManager(String id);
+
+    ResponseEntity register(Manager manager);
+
+    ResponseEntity login(Manager manager, HttpSession session);
+
+    ResponseEntity checkPassword(Manager manager);
+
+    ResponseEntity getManagerInfo(String sessionId);
 }

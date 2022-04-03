@@ -10,19 +10,16 @@ import java.util.Map;
 @Mapper
 @Repository
 public interface ManagerMapper {
-    List<Manager> managerList();
+    List<Manager> queryManagerList();
 
-    Manager queryManager(String id);
+    Manager queryManager(String name);
 
-    Manager queryManagerByAccount(String account);
+    Manager queryManagerById(String id);
 
-    Manager verifyManager(Map<String, String> params);
-
-    int updateManager(Map<String, String> params);
+    int updateManager(Manager Manager);
 
     int deleteManager(String id);
 
-    int addManager(Map<String, String> params);
+    int insertManager(Manager Manager);
 
-    Manager checkPassword(Map<String, Object> params);
 }

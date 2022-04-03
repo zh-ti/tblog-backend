@@ -1,5 +1,10 @@
 server:
   port: 8088
+  servlet:
+    context-path: /tblog
+  reactive:
+    session:
+      timeout: 3600
 
 spring:
   application:
@@ -14,11 +19,6 @@ spring:
     multipart:
       max-request-size: 1GB  # 上传文件总的最大值 默认10MB
       max-file-size: 5MB #单个文件最大值 默认10MB
-
-file:
-  upload:
-    article:
-      image: upload/article/image/
 
 mybatis:
   type-aliases-package: com.tian.tblog.bean

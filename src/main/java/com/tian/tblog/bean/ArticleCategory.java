@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DocCategory {
+public class ArticleCategory {
     private String id;
     private String name;
     private String createDatetime;
@@ -15,7 +15,7 @@ public class DocCategory {
     private int browses;
     private int docAmount;
 
-    public DocCategory(String id, String name, String createDatetime){
+    public ArticleCategory(String id, String name, String createDatetime){
         this.id = id;
         this.name = name;
         this.createDatetime = createDatetime;

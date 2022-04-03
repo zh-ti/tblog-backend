@@ -9,15 +9,15 @@ import java.util.List;
 @Mapper
 @Repository
 public interface CommentMapper {
-
-    List<Comment> getCommentList();
-
-    List<Comment> getCommentListByDoc(String docId);
-
-    int addComment(Comment comment);
-
+    // 查询所有的评论
+    List<Comment> queryCommentList();
+    // 查询指定文章下的评论
+    List<Comment> queryCommentListByArticle(String articleId);
+    // 插入一条评论
+    int insertComment(Comment comment);
+    // 删除一条评论
     int deleteComment(String id);
-
-    int deleteCommentByDoc(String docId);
+    // 删除指定文章下的评论
+    int deleteCommentByArticle(String docId);
 
 }

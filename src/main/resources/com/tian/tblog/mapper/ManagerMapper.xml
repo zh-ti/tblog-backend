@@ -5,40 +5,45 @@
 
 <mapper namespace="com.tian.tblog.mapper.ManagerMapper">
     <select id="queryManager" parameterType="String" resultType="Manager">
+        select * from manager where name=#{name}
+    </select>
+
+    <select id="queryManagerById" parameterType="String" resultType="Manager">
         select * from manager where id=#{id}
     </select>
 
-    <select id="verifyManager" parameterType="map" resultType="Manager">
-        select * from manager where account=#{account} and password=#{password}
+    <select id="verifyManager" parameterType="Manager" resultType="Manager">
+        select * from manager where name=#{name} and password=#{password}
     </select>
 
-    <update id="updateManager" parameterType="map">
-        update manager set account=#{account}, password=#{password}, position=#{position} where id=#{id}
+    <update id="updateManager" parameterType="Manager">
+        update manager set name=#{name}, password=#{password}, position=#{position} where id=#{id}
     </update>
 
     <delete id="deleteManager" parameterType="String">
         delete from manager where id=#{id}
     </delete>
 
-    <insert id="addManager" parameterType="map">
-        insert into manager(id, account, password, position, regist_datetime)
-        values(#{id}, #{account}, #{password}, #{position}, #{registDatetime})
+    <insert id="insertManager" parameterType="Manager">
+        insert into manager(id, name, password, position, regist_datetime, salt)
+        values(#{id}, #{name}, #{password}, #{position}, #{registrationDatetime}, #{salt})
     </insert>
 
-    <select id="managerList" resultType="Manager">
+    <select id="queryManagerList" resultType="Manager">
         select
             id,
-            account,
+            name,
             password,
             position,
-            regist_datetime registDatetime
+            regist_datetime registrationDatetime,
+            salt
         from manager
     </select>
 
     <select id="checkPassword" resultType="Manager">
         select * from manager where id=#{id} and password=#{password}
     </select>
-    <select id="queryManagerByAccount" resultType="Manager">
-        select * from manager where account=#{account}
+    <select id="queryManagerByName" resultType="Manager">
+        select * from manager where name=#{name}
     </select>
 </mapper>
